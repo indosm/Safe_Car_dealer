@@ -12,12 +12,25 @@ import Update from "./components/update.react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      title: null
+    }
+  }
+  componentDidMount() {
+    fetch('http://localhost:3001/api')
+      .then(res => res.json())
+      .then(data => this.setState({title: data.title}));
+  }
   render(){
     return (
       <React.StrictMode>
         <Router>
           <Navigation />
-
+          <div>
+            {this.state.title? <h1>{this.state.title}</h1>:<h1>loading...</h1>}
+          </div>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/history/:id" component={History} />
