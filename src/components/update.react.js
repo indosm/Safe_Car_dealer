@@ -1,24 +1,26 @@
 import * as React from "react";
-import {Form, Button, Row, Col} from "react-bootstrap";
 import { render } from "react-dom";
 
 class Update extends React.Component{
-    state = {
-        action: '차량 구매하기',
-        car_name: '',
-        user_name: '',
-        detail: ''
+    constructor(props){
+        super(props);
+        this.state = {
+            action: '차량 구매하기',
+            car_name: '',
+            user_name: '',
+            detail: ''
+        }
     }
-    ActionChange = (e) => {
+    ActionChange(e){
         this.setState({action: e.target.value});
     }
-    NameChange = (e) => {
+    NameChange(e){
         this.setState({car_name: e.target.value});
     }
-    DetailChange = (e) => {
+    DetailChange(e){
         this.setState({detail: e.target.value});
     }
-    handleSubmit = (e) => {
+    handleSubmit(e){
         const form = e.currentTarget;
         alert('Action : ' +this.state.action + ' name : '+this.state.car_name+' detail : '+this.state.detail);
         e.preventDefault();
@@ -26,6 +28,8 @@ class Update extends React.Component{
     render(){
         return (
             <>
+            </>
+            );}}/*
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group as={Row} controlId="WriteTrace.ChooseAction">
                         <Col sm={2}>
@@ -61,5 +65,5 @@ class Update extends React.Component{
         )
     }
 }
-
+*/
 export default Update;
