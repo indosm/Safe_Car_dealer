@@ -9,38 +9,51 @@ import Infolist from './components/Infolist.react';
 import History from './components/history.react';
 import Update from "./components/update.react";
 
+import LOGIN_PAGE from "./components/login.react";
+
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      title: null
+      logged_in: false,
+      id: '',
+      pw: ''
     }
+    this.LogIn = this.LogIn.bind(this);
+  }
+
+  LogIn(data){
+    this.setState({
+      logged_in:true
+    })
   }
   componentDidMount() {
-    fetch('http://localhost:3001/api')
-      .then(res => res.json())
-      .then(data => this.setState({title: data.title}));
+    fetch('http://localhost:3001/api/auth')
   }
   render(){
-    return (
-      <React.StrictMode>
-        <Router>
-          <Navigation />
-          <div>
-            {this.state.title? <h1>{this.state.title}</h1>:<h1>loading...</h1>}
-          </div>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/history/:id" component={History} />
-            <Route path="/history" component={History} />
-            <Route path="/update" component={Update} />
-            <Route component={Error404} />
-          </Switch>
-        </Router>
-      </React.StrictMode>
-    );
+    if(this.state.logged_in==false){
+      return (
+          <LOGIN_PAGE action={this.LogIn}/>
+      );
+    }
+    else {
+      return (
+          <React.StrictMode>
+            <Router>
+              <Navigation/>
+              <Switch>
+                <Route exact path="/" component={HomePage}/>
+                <Route path="/history/:id" component={History}/>
+                <Route path="/history" component={History}/>
+                <Route path="/update" component={Update}/>
+                <Route component={Error404}/>
+              </Switch>
+            </Router>
+          </React.StrictMode>
+      );
+    }
   }
     
 }
