@@ -20,11 +20,11 @@ const useStyles = makeStyles({
         overflow: "visible"
     }
 });
+
 function Infolist({ match }) {
   const [count,setCount] = useState(0);
   const classes = useStyles();
   useEffect(() => {
-    document.title = `${count} cars`;
     if(isLoading==true){
     fetch('http://localhost:3001/api/get_list')
       .then(res => res.json())
@@ -38,6 +38,7 @@ function Infolist({ match }) {
   if (isLoading){
     return <p>현재 로딩중입니다.</p>
   } else{
+    console.log(users1);
     return (
       <>
         <h2> 차량 리스트입니다</h2>

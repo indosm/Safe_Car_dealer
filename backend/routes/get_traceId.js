@@ -5,7 +5,7 @@ const fs = require('fs');
 
 router.get('/', function(req, res){
     let token = req.token;
-    console.log('auth로 부터 온 token : '+token);
+    //console.log('auth로 부터 온 token : '+token);
     if(token!=undefined){
         var jsonDataObj = {a:'a'};
 

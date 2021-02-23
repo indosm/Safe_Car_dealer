@@ -7,6 +7,7 @@ router.get('/:id', function(req, res){
     const jsonFile = fs.readFileSync('./backend/data/token.json','utf8');
     let token= JSON.parse(jsonFile).token;
     let traceId = JSON.parse(jsonFile).traceId;
+    console.log("history api로 ",req.params.id,"검색 들어옴");
     if(token!=undefined){
         var jsonDataObj = {a:'a'};
 
@@ -16,7 +17,6 @@ router.get('/:id', function(req, res){
             body: jsonDataObj,
             json: true
         }, function(error, response, body){
-            res.json(body);
             let obj = JSON.parse(JSON.stringify(body));
             let count = obj.data.events.count;
             const logtable = new Array(count);
@@ -25,17 +25,16 @@ router.get('/:id', function(req, res){
                 let eventName = obj.data.events.items[i].eventName;
                 let timestamp = obj.data.events.items[i].timestamp;
                 let data = obj.data.events.items[i].data;
-                console.log(userName, eventName, timestamp, data);
+                //console.log(userName, eventName, timestamp, data);
                 const tmp_arr = new Array(4);
                 tmp_arr[0] = userName;
                 tmp_arr[1] = eventName;
                 tmp_arr[2] = timestamp;
                 tmp_arr[3] = data;
-                console.log('table['+i+'] : '+tmp_arr);
+                //console.log('table['+i+'] : '+tmp_arr);
                 logtable[i]=tmp_arr;
             }
-            console.log('logtable : '+logtable);
-            console.log(logtable[1][2]);
+            res.json({cnt : count,items: obj.data.events.items});
         });
     }
     else{
