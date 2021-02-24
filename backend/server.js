@@ -7,11 +7,13 @@ const list = require('./routes/get_list');
 const update = require('./routes/update');
 const traceid = require('./routes/get_traceId');
 const history = require('./routes/history');
+const login = require('./routes/login');
 
 app.use(cors());
 
 app.use('/api',api);
 app.use(express.json());
+app.use('/api/login',login);
 app.use('/api/auth',auth, traceid);
 app.use('/api/get_list',list);
 app.use('/api/update',update);

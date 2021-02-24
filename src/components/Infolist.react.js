@@ -38,7 +38,6 @@ function Infolist({ match }) {
   if (isLoading){
     return <p>현재 로딩중입니다.</p>
   } else{
-    console.log(users1);
     return (
       <>
         <h2> 차량 리스트입니다</h2>

@@ -1,10 +1,12 @@
 var request = require('request');
 var express = require('express');
 var router = express.Router();
-const fs = require('fs');
+var fs = require('fs');
 const {Client} = require('pg');
 
 router.get('/', function(req, res){
+    let email = req.query.email;
+    let pwd = req.query.pwd;
     const client = new Client({
         user : 'test1',
         host : 'localhost',
@@ -14,15 +16,21 @@ router.get('/', function(req, res){
     });
 
     client.connect();
-
-    client.query("select * from cars", (err, response) => {
+    const sql = "select * from users where email = $1 and pwd = $2";
+    const values = [email, pwd];
+    client.query(sql,values, (err, response) => {
         if(err){
             console.log(err.stack);
             res.json({result: false});
         } else{
             let count = response.rowCount;
-            console.log(count,response.rows);
-            res.json({cnt:count, items:response.rows});
+            console.log(count);
+            if(count>0){
+                res.json({result:true});
+            }
+            else{
+                res.json({result:false});
+            }
         }
         client.end();
     });

@@ -17,17 +17,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      logged_in: false,
-      id: '',
-      pw: ''
+      logged_in: false
     }
     this.LogIn = this.LogIn.bind(this);
   }
 
   LogIn(data){
-    this.setState({
-      logged_in:true
-    })
+    let login = localStorage.getItem("Logged_in");
+    if(login=='true'){
+      this.setState({
+        logged_in:true
+      })
+    }
   }
   componentDidMount() {
     fetch('http://localhost:3001/api/auth')
