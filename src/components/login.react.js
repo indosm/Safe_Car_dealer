@@ -2,23 +2,28 @@ import React, { Component, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CustomInput from "./CustomInput.react";
 
-export default class LOGIN_PAGE extends Component {
-  state = {
-    email: "",
-    password: ""
-  };
-
-  handleChange = e => {
+class LOGIN_PAGE extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: ""
+    }
+    this.login = this.login.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e){
     this.setState({ [e.currentTarget.id]: e.currentTarget.value });
   };
 
-  login = e => {
+  login(e){
     localStorage.setItem("Logged_in",false);
     fetch('http://localhost:3001/api/login?email='+this.state.email+'&pwd='+this.state.password)
     .then(res => res.json())
     .then(data => {
         if(data.result==true){
             localStorage.setItem("Logged_in",true);
+            localStorage.setItem("email",this.state.email);
         }
         this.props.action();
     });
@@ -55,3 +60,5 @@ export default class LOGIN_PAGE extends Component {
     );
   }
 }
+
+export default LOGIN_PAGE;

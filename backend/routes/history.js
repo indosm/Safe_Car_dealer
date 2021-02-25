@@ -36,23 +36,29 @@ router.get('/:id', function(req, res){
                     json: true
                 }, function(error, response, body){
                     let obj = JSON.parse(JSON.stringify(body));
-                    let count = obj.data.events.count;
-                    const logtable = new Array(count);
-                    for (var i=0;i<count;i++){
-                        let userName = obj.data.events.items[i].userName;
-                        let eventName = obj.data.events.items[i].eventName;
-                        let timestamp = obj.data.events.items[i].timestamp;
-                        let data = obj.data.events.items[i].data;
-                        //console.log(userName, eventName, timestamp, data);
-                        const tmp_arr = new Array(4);
-                        tmp_arr[0] = userName;
-                        tmp_arr[1] = eventName;
-                        tmp_arr[2] = timestamp;
-                        tmp_arr[3] = data;
-                        //console.log('table['+i+'] : '+tmp_arr);
-                        logtable[i]=tmp_arr;
+                    if(obj.result == true){
+                        console.log(obj);
+                        let count = obj.data.events.count;
+                        const logtable = new Array(count);
+                        for (var i=0;i<count;i++){
+                            let userName = obj.data.events.items[i].userName;
+                            let eventName = obj.data.events.items[i].eventName;
+                            let timestamp = obj.data.events.items[i].timestamp;
+                            let data = obj.data.events.items[i].data;
+                            //console.log(userName, eventName, timestamp, data);
+                            const tmp_arr = new Array(4);
+                            tmp_arr[0] = userName;
+                            tmp_arr[1] = eventName;
+                            tmp_arr[2] = timestamp;
+                            tmp_arr[3] = data;
+                            //console.log('table['+i+'] : '+tmp_arr);
+                            logtable[i]=tmp_arr;
+                        }
+                        res.json({cnt : count,items: obj.data.events.items});
                     }
-                    res.json({cnt : count,items: obj.data.events.items});
+                    else{
+                        res.json({result:false});
+                    }
                 });
             }
             else{

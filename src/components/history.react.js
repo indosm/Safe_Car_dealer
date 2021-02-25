@@ -3,12 +3,14 @@ import {makeStyles} from "@material-ui/core";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import React, {Component, useEffect, useState} from 'react';
+import { Link } from "react-router-dom";
 var car_history = [
     {
       id: 0,
       name: 'sample'
     }
   ];
+var car_history_exists=false;
 const useStyles = makeStyles({
     card: {
         margin: "20px 0",
@@ -26,8 +28,14 @@ function History({match, history}){
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    car_history = data.items;
-                    console.log(car_history);
+                    if(data.result){
+                        car_history_exists=true;
+                        car_history = data.items;
+                        console.log(car_history);
+                    }
+                    else{
+                        car_history_exists=false;
+                    }
                     Loads(false);
                 });
             }
@@ -53,26 +61,31 @@ function History({match, history}){
                 <>
                     <h1>{match.params.id}'s history</h1>
                     <ul>
-                        {car_history.map(({userName, eventName, timestamp, data}) => (
-                            <Card key={timestamp} className={classes.card}>
-                                <CardContent>
-                                    <Typography color="textSecondary" gutterBottom>
-                                        {timestamp.toLocaleDateString}
-                                    </Typography>
-                                    <Typography variant="h5" component="h2">
-                                        {eventName}
-                                    </Typography>
-                                    <Typography color="textSecondary">
-                                        {userName}
-                                    </Typography>
-                                    <Typography variant="body2" component="p">
-                                        {data}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        ))}
+                        {car_history_exists &&
+                        <div>
+                            {car_history.map(({userName, eventName, timestamp, data}) => (
+                                <Card key={timestamp} className={classes.card}>
+                                    <CardContent>
+                                        <Typography color="textSecondary" gutterBottom>
+                                            {timestamp.toLocaleDateString}
+                                        </Typography>
+                                        <Typography variant="h5" component="h2">
+                                            {eventName}
+                                        </Typography>
+                                        <Typography color="textSecondary">
+                                            {userName}
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {data}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                        }
                     </ul>
                     <button onClick={() => history.goBack()}>Back</button>
+                    <Link to={`/update/`+match.params.id}> 구매하러 가기 </Link>
                 </>
             );
         }

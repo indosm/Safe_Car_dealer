@@ -48,6 +48,7 @@ class App extends Component {
                 <Route exact path="/" component={HomePage}/>
                 <Route path="/history/:id" component={History}/>
                 <Route path="/history" component={History}/>
+                <Route path="/update/:id" component={Update}/>
                 <Route path="/update" component={Update}/>
                 <Route component={Error404}/>
               </Switch>
