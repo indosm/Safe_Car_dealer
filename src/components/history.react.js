@@ -11,6 +11,7 @@ var car_history = [
     }
   ];
 var car_history_exists=false;
+var car_id = '';
 const useStyles = makeStyles({
     card: {
         margin: "20px 0",
@@ -31,7 +32,9 @@ function History({match, history}){
                     if(data.result){
                         car_history_exists=true;
                         car_history = data.items;
+                        car_id =data.name;
                         console.log(car_history);
+                        console.log(car_history_exists);
                     }
                     else{
                         car_history_exists=false;
@@ -59,8 +62,9 @@ function History({match, history}){
         else{
             return (
                 <>
-                    <h1>{match.params.id}'s history</h1>
+                    <h1>{car_id}'s history</h1>
                     <ul>
+                        {car_history_exists}
                         {car_history_exists &&
                         <div>
                             {car_history.map(({userName, eventName, timestamp, data}) => (

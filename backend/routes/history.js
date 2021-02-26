@@ -18,7 +18,7 @@ router.get('/:id', function(req, res){
     });
     let searchID=req.params.id;
     client.connect();
-    const sql = "select * from cars where id = $1";
+    const sql = "select * from cars where id = $1 order by id";
     const values = [req.params.id];
     client.query(sql,values, (err, response) => {
         if(err){
@@ -54,7 +54,7 @@ router.get('/:id', function(req, res){
                             //console.log('table['+i+'] : '+tmp_arr);
                             logtable[i]=tmp_arr;
                         }
-                        res.json({cnt : count,items: obj.data.events.items});
+                        res.json({result:true, name: searchID,cnt : count,items: obj.data.events.items});
                     }
                     else{
                         res.json({result:false});

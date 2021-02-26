@@ -7,7 +7,7 @@ router.get('/', function(req, res, next){
     const jsonFile = fs.readFileSync('./backend/data/data.json','utf8');
     let key = JSON.parse(jsonFile).key;
     let sec = JSON.parse(jsonFile).sec;
-    var jsonDataObj = {"accessKey": key, "secretKey": sec, "expiresIn": 200};
+    var jsonDataObj = {"accessKey": key, "secretKey": sec, "expiresIn": 600};
 
     request.post({
         headers: {'content-type': 'application/json', 'accept': 'application/json'},

@@ -21,14 +21,17 @@ const useStyles = makeStyles((theme) =>({
         marginTop  : theme.spacing(2)
     }
 }))
-export default function Update({match}) {
+export default function Update({match, history}) {
     const classes = useStyles();
     const [car_action, setAction] = useState('BUY');
     const [is_loading, load_fin] = useState('true');
+    const [data, setData] = useState('여기에 입력하고 싶으신 데이터를 입력하시면 됩니다. 예) 차량 구입 : 700만원');
     const handleChange = (event) =>{
         setAction(event.target.value);
     }
-
+    const dataChange = (e)=>{
+        setData(e.target.value);
+    }
     useEffect(() => {
         if(match.params.id != undefined){
             fetch('http://localhost:3001/api/get_list/'+match.params.id)
@@ -40,8 +43,25 @@ export default function Update({match}) {
                 });
             }
     }, []);
-    const login= ()=>{
-        console.log("hi");
+    const submit= ()=>{
+        let email = localStorage.getItem("email");
+        fetch('http://localhost:3001/api/update',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'action':car_action,
+                'car_name':car_name,
+                'username':email,
+                'data':data
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                history.replace('/history/'+match.params.id);
+            })
     }
     if(match.params.id==undefined){
         return (
@@ -52,6 +72,7 @@ export default function Update({match}) {
         );
     }
     else{
+        console.log(data);
         return (
             <>
                 <Typography variant="h5">
@@ -112,9 +133,11 @@ export default function Update({match}) {
                         style={{marginTop: 15,marginLeft:17}}
                         defaultValue="쓰고싶은 내용을 적으면 됩니다. 예시) 구입가격 : xxx원"
                         variant="outlined"
+                        onChange={dataChange}
                     />
                 </Grid>
-                <button onClick={()=>login}>Back</button>
+                <button onClick={() => history.goBack()}>Back</button>
+                <button onClick={()=>submit()}>Update</button>
             </>
         );
     }
